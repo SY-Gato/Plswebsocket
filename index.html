@@ -1,0 +1,39 @@
+<!DOCTYPE html><!-- (c) 2011 Einar Otto Stangvik, MIT License -->
+<html>
+  <head>
+    <script>
+      alert("Hi");
+      try {
+      function updateStats(memuse) {
+        document.getElementById('rss').innerHTML = memuse.rss;
+        document.getElementById('heapTotal').innerHTML = memuse.heapTotal;
+        document.getElementById('heapUsed').innerHTML = memuse.heapUsed;
+      }
+      //var host = "cool-paletas-2c033a.netlify.app/.netlify/functions/index";
+      //var host = "javascript.info/article/websocket/demo/hello";
+      var host = "cool-paletas-2c033a.netlify.app/.netlify/functions/index";
+      //var host = "./.netlify/functions/index.js:8080";
+      var ws = new WebSocket('wss://' + host);
+      ws.onopen = function (event) {
+        alert("Connected");
+        ws.send("My name is Hello");
+      };
+      ws.onmessage = function (event) {
+        alert(event.data);
+        //updateStats(JSON.parse(event.data));
+      };
+      ws.onclose = function(event) {
+        alert("connection closed");
+        alert(event.code);
+      };
+      } catch (e) {
+        alert(e);
+      }
+    </script>
+  </head>
+  <body>
+    RSS: <div id='rss'></div><br>
+    Heap total: <div id='heapTotal'></div><br>
+    Heap used: <div id='heapUsed'></div><br>
+  </body>
+</html>
